@@ -1,18 +1,17 @@
 const mongoose = require('mongoose');
 const stream = require("node:stream");
+const string_decoder = require("node:string_decoder");
 // const bcrypt = require('bcryptjs');
 const Schema = mongoose.Schema;
 
 const serverHistorySchema = new Schema({
     serverName: {
-        type: String,
-        required: true
+        type: String
+    },
+    date :{
+        type: String
     },
     history:[{
-        date: {
-            type: Date,
-            required: true
-        },
         isServerOn: {
             type: Boolean,
             required: true
@@ -20,7 +19,12 @@ const serverHistorySchema = new Schema({
         userCount: {
             type: Number,
             required: true
-        }
+        },
+        time: {
+            type: Date,
+            default: Date.now
+        },
+        type: Array
     }]
 });
 
