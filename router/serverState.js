@@ -12,6 +12,9 @@ router.get('/',(req ,res)=>{
 router.get('/work',(req ,res)=>{
     res.render('../views/work');
 });
+router.get('/chart',(req ,res)=>{
+    res.render('../views/chart');
+});
 router.post('/updateServerState', (req, res) => {
     recordServerStatus[1]()
         .then(() => res.sendStatus(200))
@@ -30,7 +33,7 @@ router.post('/saveRecord', (req, res) => {
         .catch(err => res.status(500).send(err));
 });
 router.post('/scheduleCronJob', (req, res) => {
-    cron.schedule('*/10 * * * *', () => {
+    cron.schedule(`*/${req.body.repeatTime} * * * *`, () => {
         recordServerStatus[1]();
     });
     cron.schedule('0 0 * * *', () => {
@@ -41,6 +44,15 @@ router.post('/scheduleCronJob', (req, res) => {
 router.post('/stopScheduledCronJob', (req, res) => {
     cron.cancelAll();
     res.sendStatus(200);
+});
+router.get('/getChartData', async (req, res) => {
+    try {
+        const data = await serverState.findOne({ date: new Date(new Date().getTime() + 9 * 60 * 60 * 1000).toISOString().split('T')[0] }); // Ensure this returns an array
+        console.log(data.history);
+        res.json(data.history); // Ensure this returns an array
+    } catch (error) {
+        res.status(500).send(error);
+    }
 });
 
 

@@ -8,13 +8,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     document.getElementById('button1').addEventListener('click', function() {
         console.log('서버 분석 시작');
-        alert('서버 분석 시작');
+        alert('서버 분석 시작(스케쥴 실행)');
         fetch('/api/scheduleCronJob', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ serverName: 'serverIP' }) // Ensure serverIP is defined or replace with actual value
+            body: JSON.stringify({ repeatTime:document.getElementById("input0").value() }) // Ensure serverIP is defined or replace with actual value
         }).catch(error => console.error('Error:', error));
     });
 
