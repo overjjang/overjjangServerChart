@@ -47,7 +47,9 @@ router.post('/stopScheduledCronJob', (req, res) => {
 });
 router.get('/getChartData', async (req, res) => {
     try {
-        const data = await serverState.findOne({ date: new Date(new Date().getTime() + 9 * 60 * 60 * 1000).toISOString().split('T')[0] }); // Ensure this returns an array
+        const url = req.url;
+        const date = url.split('?')[1].split('=')[1];
+        const data = await serverState.findOne({ date: date }); // Ensure this returns an array
         console.log(data.history);
         res.json(data.history); // Ensure this returns an array
     } catch (error) {
