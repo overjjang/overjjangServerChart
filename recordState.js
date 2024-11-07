@@ -5,7 +5,7 @@ require('dotenv').config();
 // const fetch = require('node-fetch');
 const apiUrl = "https://api.mcsrvstat.us/3/";
 const DB_URL = process.env.DB_URL;
-const serverIP = process.env.SERVER_IP;
+const serverIP = "overjjang.xyz";
 
 // @ToDo: 서버 이름 입력, 분석서버 늘리기 가능하게 하기
 
