@@ -1,11 +1,18 @@
 document.addEventListener('DOMContentLoaded', async function() {
+    const servers = await fetch('/api/getServers', {
+        method: 'GET'
+    }).then(response => response.json());
+    console.log('Fetched servers:', servers); // Log the fetched servers
+    for(const server of servers) {
+        const option = document.createElement('option');
+        option.value = server;
+        option.textContent = server;
+        document.getElementById('selset').appendChild(option);
+    }
     const ctx = document.getElementById('myChart').getContext('2d');
-    document.getElementById('input1').value = new Date().toISOString().split('T')[0]; // Set the input value to today's date
-    // excute when the button is clicked
-    document.getElementById('button1').addEventListener('click', async function () {
-        console.log('Fetch chart data', document.getElementById('input1').value);
+    document.getElementById('button1').addEventListener('click', async function() {
         try {
-            const response = await fetch('/api/getChartData', {
+            const response = await fetch(`/api/getChartData?date=${document.getElementById('input1').value}&serverName=${document.getElementById("selset").value}`, {
                 method: 'GET'
             });
             const chartData = await response.json();
@@ -44,6 +51,5 @@ document.addEventListener('DOMContentLoaded', async function() {
         } catch (error) {
             console.error('Error fetching chart data:', error);
         }
-
     });
 });

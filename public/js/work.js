@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ repeatTime:document.getElementById("input0").value() }) // Ensure serverIP is defined or replace with actual value
+            body: JSON.stringify({ repeatTime:document.getElementById("input0").value }) // Ensure serverIP is defined or replace with actual value
         }).catch(error => console.error('Error:', error));
     });
 
@@ -38,6 +38,22 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('서버 상태 저장');
         fetch('/api/saveRecord', {
             method: 'POST'
+        }).catch(error => console.error('Error:', error));
+    });
+    document.getElementById('button5').addEventListener('click', function() {
+        const serverName = document.getElementById('input1').value;
+        if (!serverName) {
+            alert('서버 이름을 입력하세요');
+            return;
+        }
+        console.log(serverName);
+        alert('분석 서버 추가');
+        fetch('/api/addServer', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ serverName: serverName })
         }).catch(error => console.error('Error:', error));
     });
 });
