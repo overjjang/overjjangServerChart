@@ -45,7 +45,7 @@ router.post('/scheduleCronJob', (req, res) => {
         recordServerStatus[2]();
     });
     res.sendStatus(200);
-    console.log(`Cron job scheduled to run every ${req.body.repeatTime} minutes`);
+    console.log(`Cron job scheduled to run every 10 minutes`);
 });
 router.post('/stopScheduledCronJob', (req, res) => {
     cron.cancelAll();
