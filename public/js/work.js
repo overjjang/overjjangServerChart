@@ -7,6 +7,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }).catch(error => console.error('Error:', error));
     });
     document.getElementById('button1').addEventListener('click', function() {
+        const repeatTime = document.getElementById("input0").value;
+        if (!repeatTime) {
+            alert('반복 시간을 입력하세요');
+            return;
+        }
         console.log('서버 분석 시작');
         alert('서버 분석 시작(스케쥴 실행)');
         fetch('/api/scheduleCronJob', {
@@ -14,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ repeatTime:document.getElementById("input0").value }) // Ensure serverIP is defined or replace with actual value
+            body: JSON.stringify({ repeatTime: repeatTime })
         }).catch(error => console.error('Error:', error));
     });
 

@@ -2,10 +2,13 @@ const express = require('express');
 const dotenv = require('dotenv');
 const router = express.Router();
 const serverState = require('../models/chart.model');
+const bodyParser = require('body-parser');
 const cron = require('node-cron');
 const recordServerStatus = require('../recordState');
 const fs = require('fs');
 const serverName = process.env.SERVER_IP;
+const app = express();
+app.use(express.json());
 
 router.get('/',(req ,res)=>{
     res.send("Hello World");
@@ -34,7 +37,8 @@ router.post('/saveRecord', (req, res) => {
         .catch(err => res.status(500).send(err));
 });
 router.post('/scheduleCronJob', (req, res) => {
-    cron.schedule(`*/${req.body.repeatTime} * * * *`, () => {
+    console.log(req.body);
+    cron.schedule(`*/10 * * * *`, () => {
         recordServerStatus[1]();
     });
     cron.schedule('0 0 * * *', () => {
