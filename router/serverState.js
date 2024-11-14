@@ -9,6 +9,7 @@ const fs = require('fs');
 const serverName = process.env.SERVER_IP;
 const app = express();
 app.use(express.json());
+app.use(express.json({ extended: true }));
 
 router.get('/',(req ,res)=>{
     res.send("Hello World");

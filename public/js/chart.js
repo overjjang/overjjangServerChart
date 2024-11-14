@@ -9,8 +9,10 @@ document.addEventListener('DOMContentLoaded', async function() {
         option.textContent = server;
         document.getElementById('selset').appendChild(option);
     }
+    document.getElementById('input1').value = new Date().toISOString().split('T')[0];
     const ctx = document.getElementById('myChart').getContext('2d');
     document.getElementById('button1').addEventListener('click', async function() {
+        document.getElementById('myChart').innerHTML = '';
         try {
             const response = await fetch(`/api/getChartData?date=${document.getElementById('input1').value}&serverName=${document.getElementById("selset").value}`, {
                 method: 'GET'
