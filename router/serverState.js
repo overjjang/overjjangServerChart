@@ -21,6 +21,9 @@ router.get('/work',(req ,res)=>{
 router.get('/chart',(req ,res)=>{
     res.render('../views/chart');
 });
+
+
+//------------------------post------------------------
 router.post('/updateServerState', (req, res) => {
     recordServerStatus[1]()
         .then(() => res.sendStatus(200))
