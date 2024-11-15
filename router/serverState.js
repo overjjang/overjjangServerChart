@@ -76,7 +76,7 @@ router.post('/addServer', async (req, res) => {
 
 router.get('/getServers', async (req, res) => {
     try {
-        const date = req.query.date || new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }).split(' ')[0];
+        const date = req.query.date ? req.query.date : new Date().toISOString().split('T')[0]; // Read date from query parameters
         // const serverNames = await JSON.parse(fs.readFileSync('./servers.json', 'utf-8'));
         const serverNames = await serverState.find({ date: date }).distinct('serverName');
         res.json(serverNames);
@@ -94,7 +94,6 @@ router.get('/getChartData', async (req, res) => {
             return res.status(400).send('Date and Name parameter is required');
         }
         const data = await serverState.findOne({ date: date,serverName : serverName }); // Ensure this returns an array
-        console.log(data.history);
         res.json(data.history); // Ensure this returns an array
     } catch (error) {
         res.status(500).send(error);

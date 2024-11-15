@@ -2,9 +2,13 @@ const app = require('./app');  // app.js에서 express 앱을 가져옴
 const mongoose = require('mongoose');
 const recordServerStatus = require('./recordState'); // Minecraft 서버 상태 기록 코드
 const cron = require('node-cron');
+const https = require('http');
 require('dotenv').config();
 
 const PORT = process.env.PORT || 3000;
+
+//http 설정
+
 
 
 // 서버 실행

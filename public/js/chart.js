@@ -1,18 +1,26 @@
 document.addEventListener('DOMContentLoaded', async function() {
-
-    document.getElementById('input1').value = new Date().toISOString().split('T')[0];
-    const ctx = document.getElementById('myChart').getContext('2d');
-        document.getElementById('button2').addEventListener('click',  async function () {
-            const servers = await fetch(`/api/getServers?date=${document.getElementById('input1').value}`, {
-                method: 'GET'
-            }).then(response => response.json());
-            console.log('Fetched servers:', servers); // Log the fetched servers
-            for(const server of servers) {
+    document.getElementById('input1').value = new Date(new Date().getTime() + 9 * 60 * 60 * 1000).toISOString().split('T')[0];
+    function getServerList(){
+        fetch(`/api/getServers?date=${document.getElementById('input1').value}`, {
+            method: 'GET'
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            for(const server of data){
                 const option = document.createElement('option');
                 option.value = server;
                 option.textContent = server;
                 document.getElementById('selset').appendChild(option);
             }
+        })
+        .catch(error => console.error('Error:', error));
+        }
+        getServerList();
+    const ctx = document.getElementById('myChart').getContext('2d');
+        document.getElementById('button2').addEventListener('click',  async function () {
+            document.getElementById('selset').innerHTML = '';
+            getServerList();
         });
     document.getElementById('button1').addEventListener('click', async function() {
         try {
