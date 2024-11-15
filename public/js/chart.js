@@ -1,19 +1,25 @@
 document.addEventListener('DOMContentLoaded', async function() {
-    const servers = await fetch('/api/getServers', {
-        method: 'GET'
-    }).then(response => response.json());
-    console.log('Fetched servers:', servers); // Log the fetched servers
-    for(const server of servers) {
-        const option = document.createElement('option');
-        option.value = server;
-        option.textContent = server;
-        document.getElementById('selset').appendChild(option);
-    }
+
     document.getElementById('input1').value = new Date().toISOString().split('T')[0];
     const ctx = document.getElementById('myChart').getContext('2d');
+        document.getElementById('button2').addEventListener('click',  async function () {
+            const servers = await fetch(`/api/getServers?date=${document.getElementById('input1').value}`, {
+                method: 'GET'
+            }).then(response => response.json());
+            console.log('Fetched servers:', servers); // Log the fetched servers
+            for(const server of servers) {
+                const option = document.createElement('option');
+                option.value = server;
+                option.textContent = server;
+                document.getElementById('selset').appendChild(option);
+            }
+        });
     document.getElementById('button1').addEventListener('click', async function() {
-        document.getElementById('myChart').innerHTML = '';
         try {
+            let myChart = Chart.getChart(ctx);
+            if (myChart) {
+                myChart.destroy();
+            }
             const response = await fetch(`/api/getChartData?date=${document.getElementById('input1').value}&serverName=${document.getElementById("selset").value}`, {
                 method: 'GET'
             });
@@ -24,22 +30,32 @@ document.addEventListener('DOMContentLoaded', async function() {
                 throw new Error('Fetched data is not an array');
             }
 
-            const labels = chartData.map(record => record.reduce((sum, entry) => sum + entry.time, 0));
-            const data = chartData.map(record => record.reduce((sum, entry) => sum + entry.userCount, 0));
-            console.log('Labels:', labels, 'Data:', data); // Log the labels and data
+            const timeLabels = chartData.map(record => record.reduce((sum, entry) => sum + entry.time, 0));
+            const userData = chartData.map(record => record.reduce((sum, entry) => sum + entry.userCount, 0));
+            const isServerOnData = chartData.map(record => record.reduce((sum, entry) => sum + entry.isServerOn, 0));
+            // console.log('Labels:', timeLabels, 'Data:', userData); // Log the labels and data
 
-            const myChart = new Chart(ctx, {
+            const backgroundColors = isServerOnData.map(isServerOn => isServerOn ? 'rgba(75, 192, 192, 0.2)' : 'rgba(122,122,122,0.2)');
+            const borderColors = isServerOnData.map(isServerOn => isServerOn ? 'rgba(75, 192, 192, 1)' : 'rgb(90,90,90)');
+            myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: labels,
+                    labels: timeLabels,
                     datasets: [{
                         label: 'User Count',
-                        data: data,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
+                        data: userData,
+                        backgroundColor: backgroundColors,
+                        borderColor: borderColors,
                         borderWidth: 1,
+                        fill: isServerOnData,
                         cubicInterpolationMode: 'monotone',
-                        tension: 1
+                        tension: 1,
+                        segment:{
+                            borderColor: function(context) {
+                                const index = context.p0DataIndex;
+                                return isServerOnData[index] ? 'rgba(75, 192, 192, 1)' : 'rgb(90,90,90)';
+                            }
+                        }
                     }]
                 },
                 options: {
