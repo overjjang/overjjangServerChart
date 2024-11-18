@@ -44,11 +44,9 @@ document.addEventListener('DOMContentLoaded', async function() {
                 return `${arr[0]}:${arr[1]}`;
             }
 
-            const timeLabels = chartData.map(record => record.reduce((sum, entry) => sum + formatTime(entry.time), 0));
-            console.log('timeLabels:', timeLabels[0],typeof timeLabels[0]);
-            const userData = chartData.map(record => record.reduce((sum, entry) => sum + entry.userCount, 0));
-            const isServerOnData = chartData.map(record => record.reduce((sum, entry) => sum + entry.isServerOn, 0));
-            // console.log('Labels:', timeLabels, 'Data:', userData); // Log the labels and data
+            const timeLabels = chartData.map(record => record.time);
+            const userData = chartData.map(record => record.userCount);
+            const isServerOnData = chartData.map(record => record.isServerOn);
 
             const backgroundColors = isServerOnData.map(isServerOn => isServerOn ? 'rgba(75, 192, 192, 0.2)' : 'rgba(122,122,122,0.2)');
             const borderColors = isServerOnData.map(isServerOn => isServerOn ? 'rgba(75, 192, 192, 1)' : 'rgb(90,90,90)');
