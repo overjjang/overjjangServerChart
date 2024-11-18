@@ -91,7 +91,7 @@ router.get('/getServers', async (req, res) => {
 
 router.get('/getChartData', async (req, res) => {
     try {
-        const date = req.query.date; // Read date from query parameters
+        const date = new Date(req.query.date); // Read date from query parameters
         const serverName = req.query.serverName; // Read serverName from query parameters
         if (!date || !serverName) {
             return res.status(400).send('Date and Name parameter is required');

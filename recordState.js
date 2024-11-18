@@ -52,13 +52,14 @@ async function recordServerStatus() {
             const data = await response.json();
             const time = new Date(new Date().getTime() + 9 * 60 * 60 * 1000).toISOString().split('T')[1];
             const date = new Date(new Date().getTime() + 9 * 60 * 60 * 1000).toISOString().split('T')[0];
+            console.log("date:",date);
 
             const isServerOn = data.online;
             const userCount = isServerOn ? data.players.online : 0;
 
             // 날짜별로 서버 상태 업데이트
             const updateResult = await serverState.findOneAndUpdate(
-                { serverName: serverIP, date: date },
+                { serverName: serverIP, date: new Date(date) },
                 {
                     $push: { history: { time: time, userCount: userCount, isServerOn: isServerOn } }
                 },

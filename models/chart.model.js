@@ -9,7 +9,7 @@ const serverHistorySchema = new Schema({
         type: String
     },
     date :{
-        type: String
+        type: Date
     },
     history:[{
         isServerOn: {
@@ -24,7 +24,7 @@ const serverHistorySchema = new Schema({
             type: Date,
             default: Date.now
         },
-        type: Array
+        type: Object
     }]
 });
 
