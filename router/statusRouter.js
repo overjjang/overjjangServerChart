@@ -6,11 +6,15 @@ const cron = require('node-cron');
 
 var router = express.Router();
 
-const serverState = require('../models/chart.model');
+const statusRouter = require('../models/chart.model');
 const recordServerStatus = require('../recordState');
 
 const serverName = process.env.SERVER_IP;
 
+let cronTime = {
+    time: 0,
+    isOn:false
+}
 
 router.get('/',(req ,res)=>{
     res.send("Hello World");
@@ -21,7 +25,23 @@ router.get('/work',(req ,res)=>{
 router.get('/chart',(req ,res)=>{
     res.render('../views/chart');
 });
+//작업내용 확인
+router.get('/status', (req, res) => {
 
+    res.render('../views/status');
+});
+
+router.get('/getWorkStatus', async (req, res) => {
+    const serverNames = JSON.parse(fs.readFileSync('./servers.json', 'utf-8'));
+    const latestRecord = [];
+    const date = new Date(new Date().getTime() + 9 * 60 * 60 * 1000).toISOString().split('T')[0];
+    for (let i in serverNames) {
+        const data = await statusRouter.findOne({ serverName: serverNames[i], date: date });
+        latestRecord.push(data.history[data.history.length - 1]);
+    }
+    const cronTasks = cronTime;
+    res.json({cronTasks, serverNames, latestRecord });
+});
 
 //------------------------post------------------------
 router.post('/updateServerState', (req, res) => {
@@ -47,6 +67,8 @@ router.post('/saveRecord', (req, res) => {
 
 router.post('/scheduleCronJob', async (req, res) => {
     const time = req.body.repeatTime;
+    cronTime.time = time;
+    cronTime.isOn = true;
     cron.schedule(`*/${time} * * * *`, () => {
         recordServerStatus[1]();
     });
@@ -60,6 +82,7 @@ router.post('/scheduleCronJob', async (req, res) => {
 
 router.post('/stopScheduledCronJob', (req, res) => {
     cron.cancelAll();
+    cronTime.isOn = false;
     res.sendStatus(200);
 });
 
@@ -81,7 +104,7 @@ router.get('/getServers', async (req, res) => {
     try {
         const date = req.query.date ? req.query.date : new Date().toISOString().split('T')[0]; // Read date from query parameters
         // const serverNames = await JSON.parse(fs.readFileSync('./servers.json', 'utf-8'));
-        const serverNames = await serverState.find({ date: date }).distinct('serverName');
+        const serverNames = await statusRouter.find({ date: date }).distinct('serverName');
         res.json(serverNames);
     } catch (error) {
         res.status(500).send(error);
@@ -96,7 +119,7 @@ router.get('/getChartData', async (req, res) => {
         if (!date || !serverName) {
             return res.status(400).send('Date and Name parameter is required');
         }
-        const data = await serverState.findOne({ date: date,serverName : serverName }); // Ensure this returns an array
+        const data = await statusRouter.findOne({ date: date,serverName : serverName }); // Ensure this returns an array
         res.json(data.history); // Ensure this returns an array
     } catch (error) {
         res.status(500).send(error);
