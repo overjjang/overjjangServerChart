@@ -100,7 +100,7 @@ router.post('/addServer', async (req, res) => {
 });
 
 
-router.get('/getServers', async (req, res) => {
+router.get('/getServer', async (req, res) => {
     try {
         const date = req.query.date ? req.query.date : new Date().toISOString().split('T')[0]; // Read date from query parameters
         // const serverNames = await JSON.parse(fs.readFileSync('./servers.json', 'utf-8'));
