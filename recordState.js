@@ -8,9 +8,6 @@ const apiUrl = "https://api.mcsrvstat.us/3/";
 const DB_URL = process.env.DB_URL;
 const serverIPs = JSON.parse(fs.readFileSync('./servers.json', 'utf-8'));
 
-// @ToDo: 서버 이름 입력, 분석서버 늘리기 가능하게 하기
-
-
 
 // MongoDB 연결
 mongoose.connect(DB_URL, {})
