@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         console.log('서버 분석 시작');
-        alert('서버 분석 시작(스케쥴 실행)');
         fetch('/api/scheduleCronJob', {
             method: 'POST',
             headers: {
@@ -21,6 +20,9 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             body: JSON.stringify({ repeatTime: repeatTime })
         }).catch(error => console.error('Error:', error));
+        alert('서버 분석 시작(스케쥴 실행)');
+        document.getElementById("button1").classList.add("disabled");
+        document.getElementById('button4').classList.remove("disabled");
     });
 
     document.getElementById('button2').addEventListener('click', function() {
@@ -38,12 +40,8 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch('/api/stopScheduledCronJob', {
             method: 'POST'
         }).catch(error => console.error('Error:', error));
-    });
-    document.getElementById('button3').addEventListener('click', function() {
-        alert('서버 상태 저장');
-        fetch('/api/saveRecord', {
-            method: 'POST'
-        }).catch(error => console.error('Error:', error));
+        document.getElementById("button1").classList.remove("disabled");
+        document.getElementById('button4').classList.add("disabled");
     });
     document.getElementById('button5').addEventListener('click', function() {
         const serverName = document.getElementById('input1').value;

@@ -3,13 +3,20 @@ const mongoose = require('mongoose');
 const recordServerStatus = require('./recordState'); // Minecraft 서버 상태 기록 코드
 const cron = require('node-cron');
 const https = require('http');
+const helmet = require("helmet");
 require('dotenv').config();
 
 const PORT = process.env.PORT || 3000;
 
-//http 설정
-
-
+app.use(helmet.contentSecurityPolicy(
+    {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["*"],
+        imgSrc: ["*"],
+        styleSrc: ["*"],
+        frameSrc: ["*"]
+    }
+))
 
 // 서버 실행
 app.listen(PORT, () => {

@@ -17,10 +17,10 @@ let cronTime = {
 }
 
 router.get('/',(req ,res)=>{
-    res.send("Hello World");
+    res.render('../views/api-index');
 });
 router.get('/work',(req ,res)=>{
-    res.render('../views/work');
+    res.render('../views/work',{cronTime});
 });
 router.get('/chart',(req ,res)=>{
     res.render('../views/chart');
@@ -99,7 +99,7 @@ router.post('/addServer', async (req, res) => {
         fs.writeFileSync('./servers.json', JSON.stringify(serverNames));
         res.sendStatus(200);
     } else {
-        res.status(400).send('Server already exists');
+        res.status(409).send('Server already exists');
     }
 });
 
