@@ -12,9 +12,11 @@ const recordServerStatus = require('../recordState');
 const serverName = process.env.SERVER_IP;
 
 let cronTime = {
+    main: null,
     time: 0,
     isOn:false
-}
+};
+let minTask, dayTask;
 
 router.get('/',(req ,res)=>{
     res.render('../views/api-index');
@@ -73,10 +75,10 @@ router.post('/scheduleCronJob', async (req, res) => {
     const time = req.body.repeatTime;
     cronTime.time = time;
     cronTime.isOn = true;
-    cron.schedule(`*/${time} * * * *`, () => {
+    minTask = cron.schedule(`*/${time} * * * *`, () => {
         recordServerStatus[1]();
     });
-    cron.schedule('0 0 * * *', () => {
+    dayTask=cron.schedule('0 0 * * *', () => {
         recordServerStatus[2]();
     });
     res.sendStatus(200);
@@ -85,7 +87,8 @@ router.post('/scheduleCronJob', async (req, res) => {
 
 
 router.post('/stopScheduledCronJob', (req, res) => {
-    cron.cancelAll();
+    minTask.stop();
+    dayTask.stop();
     cronTime.isOn = false;
     res.sendStatus(200);
 });

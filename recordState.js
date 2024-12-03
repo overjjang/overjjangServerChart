@@ -2,6 +2,7 @@ const serverState = require('./models/chart.model'); // 모델 경로 수정
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const fs = require('fs');
+const {MongooseError} = require("mongoose");
 require('dotenv').config();
 // const fetch = require('node-fetch');
 const apiUrl = "https://api.mcsrvstat.us/3/";
@@ -65,6 +66,12 @@ async function recordServerStatus() {
             console.log("서버 상태 기록 업데이트 주소:", serverIP, "\n시각:", time, " 켜짐(Y/N):", isServerOn ? "Y" : "N", " 유저 수:", userCount);
         }
     } catch (error) {
+        if (error instanceof MongooseError) {
+            console.error("MongoDB 연결 오류 재연결 시도:", error);
+            mongoose.connect(DB_URL, {})
+                .then(() => console.log('MongoDB 연결 성공'))
+                .catch((error) => console.error('MongoDB 연결 실패:', error));
+        }
         console.error("서버 상태 기록 오류:", error);
     }
 }
