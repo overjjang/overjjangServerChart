@@ -30,6 +30,10 @@ async function createRecord() {
     const date = new Date(new Date().getTime() + 9 * 60 * 60 * 1000).toISOString().split('T')[0];
     try {
         for (const serverIP of serverIPs) {
+            if (await serverState.findOne({ serverName: serverIP, date: date })) {
+                console.log("이미 레코드가 존재합니다:", serverIP, date);
+                continue;
+            }
             await serverState.create({
                 serverName: serverIP,
                 date: date,

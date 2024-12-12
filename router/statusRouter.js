@@ -100,6 +100,7 @@ router.post('/addServer', async (req, res) => {
     if (!serverNames.includes(serverName)) {
         serverNames.push(serverName);
         fs.writeFileSync('./servers.json', JSON.stringify(serverNames));
+        recordServerStatus[2]();
         res.sendStatus(200);
     } else {
         res.status(409).send('Server already exists');
