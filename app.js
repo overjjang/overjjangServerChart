@@ -4,18 +4,24 @@ const path = require("path");
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const helmet = require('helmet');
+const crypto = require('crypto');
+
 
 const app = express();
 
 require('dotenv').config();
 
-
+app.use((req, res, next) => {
+    res.locals.nonce = crypto.randomBytes(16).toString('base64');
+    next();
+});
 
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
 app.use(helmet.contentSecurityPolicy({
     directives: {
         scriptSrc: [
@@ -23,6 +29,7 @@ app.use(helmet.contentSecurityPolicy({
             "https://code.jquery.com/",
             "https://cdn.jsdelivr.net",
             "https://cdnjs.cloudflare.com",
+            (req, res) => `'nonce-${res.locals.nonce}'`
         ],
         imgSrc: [
             "'self'",
