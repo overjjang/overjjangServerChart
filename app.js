@@ -35,7 +35,7 @@ app.use(helmet.contentSecurityPolicy({
     }
 }));
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/api', require('./router/statusRouter'));
 app.use('/', require('./router/index'));
 
