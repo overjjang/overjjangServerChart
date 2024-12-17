@@ -29,7 +29,6 @@ app.use(helmet.contentSecurityPolicy({
             "https://code.jquery.com/",
             "https://cdn.jsdelivr.net",
             "https://cdnjs.cloudflare.com",
-            (req, res) => `'nonce-${res.locals.nonce}'`
         ],
         imgSrc: [
             "'self'",
@@ -37,6 +36,9 @@ app.use(helmet.contentSecurityPolicy({
             "https://avatars.githubusercontent.com",
             "http://www.w3.org/2000/svg",
             "data:"
+        ],
+        scriptSrcAttr: [
+            "'none'",
         ],
         upgradeInsecureRequests: null // Disable HTTP to HTTPS redirection
     }
