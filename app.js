@@ -31,9 +31,6 @@ app.use(helmet.contentSecurityPolicy({
             "https://cdnjs.cloudflare.com",
             (req, res) => `'nonce-${res.locals.nonce}'`
         ],
-        scriptSrcAttr: [
-            "'none'"
-        ],
         imgSrc: [
             "'self'",
             "https://github.com",
