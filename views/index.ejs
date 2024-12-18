@@ -38,6 +38,21 @@
             background-size: cover;
             background-position: center;
         }
+        .feat-img1 {
+            /*background-image: url("/public/images/index/feat-img1.webp");*/
+            background-size: cover;
+            background-position: center;
+        }
+        .feat-img2 {
+            background-image: url("/public/images/index/feat-img2.webp");
+            background-size: cover;
+            background-position: center;
+        }
+        .feat-img3 {
+            background-image: url("/public/images/index/feat-img3.webp");
+            background-size: cover;
+            background-position: center;
+        }
 
         @media (min-width: 768px) {
             .bd-placeholder-img-lg {
@@ -179,10 +194,18 @@
                         <a class="nav-link active" aria-current="page" href="https://github.com/overjjang">Github</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/api">API</a>
+                        <a class="nav-link active btn btn-primary" aria-current="page" href="/api">API</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="https://status.overjjang.xyz">서버 상태 확인하기</a>
+                        <a class="nav-link active" href="https://status.overjjang.xyz">서버 상태 확인하기</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">편의기능</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="https://state.overjjang.xyz">서버 상태 확인하기</a>
+                            <a class="dropdown-item" href="https://lunch.overjjang.xyz">오늘 급식 확인하기</a>
+                            <a class="dropdown-item" href="https://package.overjjang.xyz">택배 조회하기</a>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -249,22 +272,22 @@
         <!-- Three columns of text below the carousel -->
         <div class="row">
             <div class="col-lg-4">
-                <svg class="bd-placeholder-img rounded-circle" width="140" height="140" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-color)"/></svg>
+                <svg class="bd-placeholder-img feat-img1 rounded-circle" width="140" height="140" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="true"><title>Placeholder</title><rect width="100%" height="100%" fill="context-fill"/></svg>
                 <h2 class="fw-normal">버짱버짱 마크서버 상태</h2>
                 <p>버짱이 처음 만든 정적 웹사이트. 심플한 디자인, 간단한 기능, 키면 버짱서버가 기본인 이기적 편의성. 버짱버짱 서버상태</p>
                 <p><a class="btn btn-secondary" href="https://state.overjjang.xyz">바로가기 &raquo;</a></p>
             </div><!-- /.col-lg-4 -->
             <div class="col-lg-4">
-                <svg class="bd-placeholder-img rounded-circle" width="140" height="140" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-color)"/></svg>
+                <svg class="bd-placeholder-img feat-img2 rounded-circle" width="140" height="140" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="true"><title>Placeholder</title><rect width="100%" height="100%" fill="context-fill"/></svg>
                 <h2 class="fw-normal">버짱버짱 오늘급식</h2>
                 <p>버짱이 2번째로 개발한 정적 웹사이트. 키 숨기려고 만든 API를 활용한 금식 조회 웹사이트. 본인 학교가 기본인 이기적 편의성, 돌려쓰기 같지만 최신기술(Bootstrap5.3)이 적용된 사이트</p>
-                <p><a class="btn btn-secondary" href="#">바로가기 &raquo;</a></p>
+                <p><a class="btn btn-secondary" href="https://lunch.overjjang.xyz">바로가기 &raquo;</a></p>
             </div><!-- /.col-lg-4 -->
             <div class="col-lg-4">
-                <svg class="bd-placeholder-img rounded-circle" width="140" height="140" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-color)"/></svg>
+                <svg class="bd-placeholder-img feat-img3 rounded-circle" width="140" height="140" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="context-fill"/></svg>
                 <h2 class="fw-normal">버짱버짱 택배 추적기</h2>
-                <p>택배 안와서 빡쳐서 만든 사이트. 개선이 필요해보이는 디자인, 또 돌려쓴 탬플릿, 만료된 API키 까지.</p>
-                <p><a class="btn btn-secondary" href="https://packag.overjjang.xyz">버로가기 &raquo;</a></p>
+                <p>택배 안와서 빡쳐서 만든 사이트. 개선이 필요해보이는 디자인, 또 돌려쓴 탬플릿, 마지막 택배 조회 기록을 저장해주는 편리함.</p>
+                <p><a class="btn btn-secondary" href="https://package.overjjang.xyz">버로가기 &raquo;</a></p>
             </div><!-- /.col-lg-4 -->
         </div><!-- /.row -->
 
@@ -317,7 +340,7 @@
     <!-- FOOTER -->
     <footer class="container">
         <p class="float-end"><a href="#">Back to top</a></p>
-        <p>&copy; 2017–2024 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+        <p>&copy; 2024 버짱버짱, all rights are reservded? &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
     </footer>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
