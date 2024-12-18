@@ -13,26 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Send request to check work status
-        id: check_work_status
-        run: |
-          RESPONSE=$(curl -Ls -w "%{http_code}" -o response.json https://overjjang.xyz/api/getWorkStatus)
-          HTTP_CODE=$(tail -n1 <<< "$RESPONSE")
-          if [ "$HTTP_CODE" -ne 200 ]; then
-            echo "Request failed with status code $HTTP_CODE"
-            cat response.json
-            exit 1
-          fi
-          CONTENT_TYPE=$(file -b --mime-type response.json)
-          if [ "$CONTENT_TYPE" != "application/json" ]; then
-            echo "Response is not JSON"
-            cat response.json
-            exit 1
-          fi
-          IS_ON=$(jq -r '.cronTasks.isOn' response.json)
-          echo "cronTasks.isOn: $IS_ON"
-          echo "::set-output name=is_on::$IS_ON"
-
       - name: Deploy to server via SSH
         env:
           SERVER_HOST: ${{secrets.SERVER_HOST}}
@@ -49,13 +29,6 @@ jobs:
             git pull origin main
             npm install
             pm2 restart server
-      - name: Schedule Cron Job
-        if: steps.check_work_status.outputs.is_on == 'true'
-        run: |
-          RESPONSE=$(curl -s -X POST https://overjjang.xyz/api/scheduleCronJob \
-            -H "Content-Type: application/json" \
-            -d '{"repeatTime": 10}')
-          echo "Response: $RESPONSE"
 
       - name: Skip deployment in fork
         env:
