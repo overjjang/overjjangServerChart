@@ -13,6 +13,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Send request to check cronTasks status
+        id: check_cronTasks
+        run: |
+          RESPONSE=$(curl -s https://overjjang.xyz/api/status)
+          echo "Response: $RESPONSE"
+          IS_ON=$(echo $RESPONSE | jq -r '.cronTasks.isOn')
+          echo "cronTasks.isOn: $IS_ON"
+          echo "::set-output name=is_on::$IS_ON"
+
       - name: Deploy to server via SSH
         env:
           SERVER_HOST: ${{secrets.SERVER_HOST}}
@@ -29,6 +38,13 @@ jobs:
             git pull origin main
             npm install
             pm2 restart server
+      - name: Schedule Cron Job
+        if: steps.check_cronTasks.outputs.is_on == 'true'
+        run: |
+          RESPONSE=$(curl -s -X POST https://overjjang.xyz/api/scheduleCronJob \
+            -H "Content-Type: application/json" \
+            -d '{"repeatTime": 10}')
+          echo "Response: $RESPONSE"
 
       - name: Skip deployment in fork
         env:
