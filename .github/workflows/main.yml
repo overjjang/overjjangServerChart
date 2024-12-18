@@ -16,9 +16,20 @@ jobs:
       - name: Send request to check work status
         id: check_work_status
         run: |
-          RESPONSE=$(curl -s https://overjjang.xyz/api/getWorkStatus)
-          echo "Response: $RESPONSE"
-          IS_ON=$(echo $RESPONSE | jq -r '.cronTasks.isOn')
+          RESPONSE=$(curl -Ls -w "%{http_code}" -o response.json https://overjjang.xyz/api/getWorkStatus)
+          HTTP_CODE=$(tail -n1 <<< "$RESPONSE")
+          if [ "$HTTP_CODE" -ne 200 ]; then
+            echo "Request failed with status code $HTTP_CODE"
+            cat response.json
+            exit 1
+          fi
+          CONTENT_TYPE=$(file -b --mime-type response.json)
+          if [ "$CONTENT_TYPE" != "application/json" ]; then
+            echo "Response is not JSON"
+            cat response.json
+            exit 1
+          fi
+          IS_ON=$(jq -r '.cronTasks.isOn' response.json)
           echo "cronTasks.isOn: $IS_ON"
           echo "::set-output name=is_on::$IS_ON"
 
