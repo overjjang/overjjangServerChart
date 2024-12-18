@@ -13,8 +13,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Send request to check cronTasks status
-        id: check_cronTasks
+      - name: Send request to check work status
+        id: check_work_status
         run: |
           RESPONSE=$(curl -s https://overjjang.xyz/api/getWorkStatus)
           echo "Response: $RESPONSE"
@@ -39,7 +39,7 @@ jobs:
             npm install
             pm2 restart server
       - name: Schedule Cron Job
-        if: steps.check_cronTasks.outputs.is_on == 'true'
+        if: steps.check_work_status.outputs.is_on == 'true'
         run: |
           RESPONSE=$(curl -s -X POST https://overjjang.xyz/api/scheduleCronJob \
             -H "Content-Type: application/json" \
