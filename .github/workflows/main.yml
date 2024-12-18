@@ -16,7 +16,7 @@ jobs:
       - name: Send request to check cronTasks status
         id: check_cronTasks
         run: |
-          RESPONSE=$(curl -s https://overjjang.xyz/api/status)
+          RESPONSE=$(curl -s https://overjjang.xyz/api/getWorkStatus)
           echo "Response: $RESPONSE"
           IS_ON=$(echo $RESPONSE | jq -r '.cronTasks.isOn')
           echo "cronTasks.isOn: $IS_ON"
