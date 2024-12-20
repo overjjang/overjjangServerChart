@@ -81,4 +81,4 @@ async function recordServerStatus() {
 }
 
 
-module.exports = [serverIPs,recordServerStatus, createRecord];
+module.exports = {recordServerStatus, createRecord};

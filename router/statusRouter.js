@@ -7,16 +7,26 @@ const cron = require('node-cron');
 var router = express.Router();
 
 const statusRouter = require('../models/chart.model');
-const recordServerStatus = require('../recordState');
-
-const serverName = process.env.SERVER_IP;
+const {createRecord,recordServerStatus} = require('../recordState');
 
 let cronTime = {
     main: null,
     time: 0,
     isOn:false
 };
-let minTask, dayTask;
+
+if(process.env.AUTO_SCEDULE === 'true') {
+    cronTime.time = process.env.CRON_TIME;
+    cronTime.isOn = true;
+    minTask = cron.schedule(`*/${cronTime.time} * * * *`, () => {
+        recordServerStatus();
+    })
+    dayTask=cron.schedule('0 0 * * *', () => {
+        createRecord();
+    });
+    console.log(`Cron job auto scheduled ${cronTime.time} minutes`);
+}
+//------------------------get------------------------
 
 router.get('/',(req ,res)=>{
     res.render('../views/api-index');
@@ -51,35 +61,38 @@ router.get('/getWorkStatus', async (req, res) => {
 
 //------------------------post------------------------
 router.post('/updateServerState', (req, res) => {
-    recordServerStatus[1]()
+    recordServerStatus()
         .then(() => res.sendStatus(200))
         .catch(err => res.status(500).send(err));
 });
 
 
 router.post('/createRecord', (req, res) => {
-    recordServerStatus[2]()
+    createRecord()
         .then(() => res.sendStatus(200))
         .catch(err => res.status(500).send(err));
 });
 
 
-router.post('/saveRecord', (req, res) => {
-    recordServerStatus[0]()
-        .then(() => res.sendStatus(200))
-        .catch(err => res.status(500).send(err));
-});
+// router.post('/saveRecord', (req, res) => {
+//     recordServerStatus[0]()
+//         .then(() => res.sendStatus(200))
+//         .catch(err => res.status(500).send(err));
+// });
 
 
 router.post('/scheduleCronJob', async (req, res) => {
+    if (cronTime.isOn) {
+        return res.status(409).send('Cron job already scheduled');
+    }
     const time = req.body.repeatTime;
     cronTime.time = time;
     cronTime.isOn = true;
     minTask = cron.schedule(`*/${time} * * * *`, () => {
-        recordServerStatus[1]();
+        recordServerStatus();
     });
     dayTask=cron.schedule('0 0 * * *', () => {
-        recordServerStatus[2]();
+        createRecord();
     });
     res.sendStatus(200);
     console.log(`Cron job scheduled to run every ${time} minutes`);
@@ -100,7 +113,7 @@ router.post('/addServer', async (req, res) => {
     if (!serverNames.includes(serverName)) {
         serverNames.push(serverName);
         fs.writeFileSync('./servers.json', JSON.stringify(serverNames));
-        recordServerStatus[2]();
+        await createRecord();
         res.sendStatus(200);
     } else {
         res.status(409).send('Server already exists');
