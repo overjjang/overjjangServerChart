@@ -1,9 +1,22 @@
+const addOutput = (output) => {
+    const outputElement = document.getElementById('ouput');
+    outputElement.innerHTML += `<p>${output}</p>`;
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('button0').addEventListener('click', function() {
         console.log('서버 분석 1회 실행');
-        alert('서버 분석 1회 실행');
         fetch('/api/updateServerState', {
             method: 'POST'
+        }).then(response => {
+            if (response.status === 200) {
+                alert(`실행 성공: ${response.status} ${response.statusText}`);
+                addOutput(`실행 성공: ${response.status} ${response.statusText}`);
+                console.log(response);
+            } else {
+                alert(`실행 실패: ${response.status} ${response.statusText}`);
+                addOutput(`실행 실패: ${response.status} ${response.statusText}`);
+        }
         }).catch(error => console.error('Error:', error));
     });
     document.getElementById('button1').addEventListener('click', function() {
@@ -12,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('반복 시간을 입력하세요');
             return;
         }
-        console.log('서버 분석 시작');
         fetch('/api/scheduleCronJob', {
             method: 'POST',
             headers: {
@@ -20,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             body: JSON.stringify({ repeatTime: repeatTime })
         }).catch(error => console.error('Error:', error));
-        alert('서버 분석 시작(스케쥴 실행)');
+
         document.getElementById("button1").classList.add("disabled");
         document.getElementById('button4').classList.remove("disabled");
     });
