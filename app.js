@@ -4,7 +4,6 @@ const path = require("path");
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const helmet = require('helmet');
-const crypto = require('crypto');
 
 
 const app = express();
@@ -23,8 +22,7 @@ app.use(helmet.contentSecurityPolicy(
             scriptSrc: ["*"],
             imgSrc: ["*", "data:"],
             frameSrc: ["*"],
-            connectSrc: ["'self'", "https://ep1.adtrafficquality.google"],
-            upgradeInsecureRequests: null // Disable HTTP to HTTPS redirection
+            connectSrc: ["'self'"],
         }
     })
 );
