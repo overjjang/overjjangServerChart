@@ -49,7 +49,7 @@ router.get('/getWorkStatus', async (req, res) => {
     const date = new Date(new Date().getTime() + 9 * 60 * 60 * 1000).toISOString().split('T')[0];
     for (let i in serverNames) {
         const data = await statusRouter.findOne({ serverName: serverNames[i], date: date });
-        if(data.history) {
+        if(data) {
             latestRecord.push(data.history[data.history.length - 1]);
         }else {
             latestRecord.push({ time: 'unrecorded', userCount: 0, isServerOn: false });
