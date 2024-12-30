@@ -28,7 +28,7 @@ jobs:
             cd ./overjjangServerChart/
             git pull origin main
             npm install
-            pm2 restart server
+            pm2 restart webServer
 
       - name: Skip deployment in fork
         env:
