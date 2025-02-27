@@ -21,7 +21,8 @@ app.use(helmet.contentSecurityPolicy({
         scriptSrc: [
             "'self'",
             "'sha256-+Lwo+D/2ltHRTtrwQ/InH0byJrAtqO7I0BYlu7tIURo='",
-            "*"
+            "*",
+            "https://cdn.jsdelivr.net"
         ],
         imgSrc: ["*", "data:"],
         frameSrc: ["*"],
