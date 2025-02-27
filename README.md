@@ -1,4 +1,4 @@
-# overjjangServerChart
+# overjjangWebServer
 버짱버짱 서버 분석기
 
 # 주요 기능
