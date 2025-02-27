@@ -20,6 +20,7 @@ app.use(helmet.contentSecurityPolicy({
         defaultSrc: ["'self'"],
         scriptSrc: [
             "'self'",
+            "'sha256-+Lwo+D/2ltHRTtrwQ/InH0byJrAtqO7I0BYlu7tIURo='",
             "*"
         ],
         imgSrc: ["*", "data:"],
