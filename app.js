@@ -20,10 +20,7 @@ app.use(helmet.contentSecurityPolicy({
         defaultSrc: ["'self'"],
         scriptSrc: [
             "'self'",
-            "'sha256-wCNJK3b2xzSDyr86kCPACP4dSWrmAd1YewdFw/8iHT0='",
-            "'sha256-QVuk0/+drQHQzqt1qAP0XzLjXhz01BGA4BNW1qRsct0='",
-            "https://cdn.jsdelivr.net",
-            "https://static.cloudflareinsights.com"
+            "*"
         ],
         imgSrc: ["*", "data:"],
         frameSrc: ["*"],
