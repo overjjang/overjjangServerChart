@@ -34,6 +34,10 @@ app.use('/', require('./router/index'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use('/public', express.static(path.join(__dirname, 'public'), {
+    maxAge: '1d' // 캐시 만료 시간을 1일로 설정
+}));
+
 //mongoose
 const db = require("./models");
 db.mongoose
