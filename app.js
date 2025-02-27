@@ -15,17 +15,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use(helmet.contentSecurityPolicy(
-    {
-        directives: {
-            defaultSrc: ["'self'"],
-            scriptSrc: ["*"],
-            imgSrc: ["*", "data:"],
-            frameSrc: ["*"],
-            connectSrc: ["'self'"],
-        }
-    })
-);
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: [
+            "'self'",
+            "'sha256-wCNJK3b2xzSDyr86kCPACP4dSWrmAd1YewdFw/8iHT0='",
+            "'sha256-QVuk0/+drQHQzqt1qAP0XzLjXhz01BGA4BNW1qRsct0='",
+            "https://cdn.jsdelivr.net",
+            "https://static.cloudflareinsights.com"
+        ],
+        imgSrc: ["*", "data:"],
+        frameSrc: ["*"],
+        connectSrc: ["'self'"]
+    }
+}));
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/', require('./router/index'));
