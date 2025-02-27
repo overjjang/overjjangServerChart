@@ -22,6 +22,7 @@ app.use(helmet.contentSecurityPolicy({
             "'self'",
             "'sha256-+Lwo+D/2ltHRTtrwQ/InH0byJrAtqO7I0BYlu7tIURo='",
             "'sha256-+8h8X+xVTI4kD5Ne/lrGYVDIGkjXfXTHbTJv11j1RWk='",
+            "'sha256-RsJiOQ5w4+U2NJNDTRluuPGVwWfaQQFM0rVsaMeC4rc='",
             "*",
             "https://cdn.jsdelivr.net"
         ],
