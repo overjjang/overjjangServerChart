@@ -20,15 +20,15 @@ app.use(helmet.contentSecurityPolicy({
         defaultSrc: ["'self'"],
         scriptSrc: [
             "'self'",
-            "'sha256-+Lwo+D/2ltHRTtrwQ/InH0byJrAtqO7I0BYlu7tIURo='",
-            "'sha256-+8h8X+xVTI4kD5Ne/lrGYVDIGkjXfXTHbTJv11j1RWk='",
-            "'sha256-RsJiOQ5w4+U2NJNDTRluuPGVwWfaQQFM0rVsaMeC4rc='",
-            "*",
+            "'unsafe-inline'",
             "https://cdn.jsdelivr.net"
         ],
-        imgSrc: ["*", "data:"],
-        frameSrc: ["*"],
-        connectSrc: ["'self'"]
+        styleSrc: ["'self'", "https://cdn.jsdelivr.net"],
+        imgSrc: ["'self'", "data:"],
+        connectSrc: ["'self'"],
+        fontSrc: ["'self'", "https://cdn.jsdelivr.net"],
+        objectSrc: ["'none'"],
+        frameSrc: ["'self'"]
     }
 }));
 
