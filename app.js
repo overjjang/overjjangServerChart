@@ -34,6 +34,7 @@ app.use(helmet.contentSecurityPolicy({
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/', require('./router/index'));
+app.use('/auth', require('./router/auth'));
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
