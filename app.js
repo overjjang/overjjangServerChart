@@ -18,14 +18,10 @@ app.use(cookieParser());
 app.use(helmet.contentSecurityPolicy({
     directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: [
-            "'self'",
-            "'unsafe-inline'",
-            "https://cdn.jsdelivr.net"
-        ],
+        scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
         styleSrc: ["'self'", "https://cdn.jsdelivr.net"],
         imgSrc: ["'self'", "data:"],
-        connectSrc: ["'self'"],
+        connectSrc: ["'self'", "http://localhost:3001"],
         fontSrc: ["'self'", "https://cdn.jsdelivr.net"],
         objectSrc: ["'none'"],
         frameSrc: ["'self'"]

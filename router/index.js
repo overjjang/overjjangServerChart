@@ -6,4 +6,8 @@ router.get('/',(req ,res)=>{
     res.render('../views/index');
 });
 
+router.get("/server-Info",(req,res)=>{
+    res.render('../views/hostState');
+});
+
 module.exports = router
